@@ -32,20 +32,23 @@ Elves depends on [Node.js](http://nodejs.org/) and [npm](http://npmjs.org/). Als
 
 
 ```
-Usage: elves [options]
-       elves [options] <config>
-       elves [options] <caseUrl>
-       elves [options] <caseUrl> <pageUrl>
+Usage: 
+
+    elves [options]
+    elves [options] <config>
+    elves [options] <caseUrl>
+    elves [options] <caseUrl> <pageUrl>
 
 Options:
 
     -h, --help                  output usage information
-    -V, --version               output the version number
+    -v, --version               output the version number
     -r, --remoteServer          take test on remote server
-    -c, --configFile <path>     config file path. defaults to test/config.json
-    -t, --testType <string>     config test type, defaults to oniui
+    -c, --configFile <path>     config file path. defaults to test/elves.config
     -a, --assertions <path>     assertions, defaults to chai
     -l, --localServer <string>  config localServer address, defaults to http://localhost:3000
+    -g, --group <string>        runs a group of tests
+    -t, --test <string>         runs a single test
 
 ```
 
@@ -134,6 +137,43 @@ elves
 ```
 
 Then we can get the reports.
+
+### simulate events and touch gestures
+
+jQuery is integrated in Elves, and we can use it simulate events and touch gestures.
+
+```
+$("selector").simulate("click"); // event
+$("selector").simulate("tap"); // gesture
+```
+
+support events:
+
+- click
+- mouse(over|out|down|up|move)
+- key(up|down|press)
+
+support gestures(defination refered to [Zepto.js](http://zeptojs.com/#Touch events) and [Hammer.js](http://hammerjs.github.io/)):
+
+- tap
+- doubleTap
+- press(longTap)
+- swipe & swipe(Right|Left|Up|Down)
+
+### testing asynchronous code 
+
+It's the same to test with Mocha.Refered to [Mocha.js](http://mochajs.org/#asynchronous-code).
+With elves, you can also delay your assertions.
+
+```
+it("should show press", function(done) {
+    container.simulate("press")
+
+    delay(done, function() {
+        expect(content.text()).to.equal("press");
+    }, 1000);
+})
+```
 
 ### test on remote server
 
